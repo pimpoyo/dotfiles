@@ -12,7 +12,7 @@ LSCOLORS=gxfxcxdxbxegedabagacad
 #enables color for iTerm
 export TERM=xterm-color
 
-# Adnrodi & Proguard
+# Android & Proguard
 export SDK_DIR=/Applications/AndroidStudio.app/sdk
 export PROGUARD_HOME=$SDK_DIR/tools/proguard
 
@@ -27,7 +27,9 @@ export PATH=$PATH:/usr/local/sbin:~/bin:$SDK_DIR/platform-tools:$SDK_DIR/tools
 export PATH=$PATH:/opt/local/bin
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-. ~/.bashrc
+if [ -f . ~/.bashrc ]; then
+	. ~/.bashrc
+fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
