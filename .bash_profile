@@ -27,7 +27,7 @@ export PATH=$PATH:/usr/local/sbin:~/bin:$SDK_DIR/platform-tools:$SDK_DIR/tools
 export PATH=$PATH:/opt/local/bin
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-if [ -f . ~/.bashrc ]; then
+if [ -f ~/.bashrc ]; then
 	. ~/.bashrc
 fi
 
