@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/juan/Projects/mobile-android-app/out'
+let g:netrw_dirhist_2='/Users/juan/Projects/androidApp_mobilesite/tests/testProject'
+let g:netrw_dirhist_3='/Users/juan/Projects/androidApp_mobilesite/tests/testProject/src/com/schibsted/smmx/tests'
+let g:netrw_dirhist_4='/Users/juan/Projects/androidApp_mobilesite/tests/testProject/src/com/schibsted/smmx/tests/unit'
