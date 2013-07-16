@@ -19,7 +19,7 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'tpope/vim-rails.git'
 
 " HTML5 vim plugin (tentative config line)
-Bundle 'html5.vim'
+Bundle 'othree/html5.vim'
 
 " vim-scripts repos
 Bundle 'L9'
