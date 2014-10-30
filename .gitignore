@@ -1,8 +1,10 @@
 # Ignore everything ....
 *
-
 # ...except dotfiles
 !.vimrc
 !.vim/**
 !.bash_profile
 !.gitignore
+
+# .. and the README
+!README.md

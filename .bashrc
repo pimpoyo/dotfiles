@@ -1,54 +1,117 @@
 # .bashrc
 
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+# Bash completion
+if [ -f /etc/bash_completion ]; then
+	. /etc/bash_completion
 fi
 
-# new one, still need to tweak
-#PS1="\[[\033[1;31m\]\t\[\033[m\]-\[\033[1;34m\]\u\[\033[m\]@\[\033[1;34m\]\h:\[\033[31;1m\]\W \j\[\033[m\]]\$ "
+# Bash completion
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
 
-# Too long for my tastes (suddenly)
-#PS1="\[[\033[1;34m\]\t\[\033[m\]-\[\033[1;34m\]\h:\[\033[34;1m\]\W \j\[\033[m\]]->"
+# git completion
+if [ ! -f ~/.git-completion ]; then
+    curl http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash?id=HEAD > ~/.git-completion
+fi
+. ~/.git-completion
 
-# Shorter, easy
-PS1="\[[\033[1;34m\]\t - \W \j\[\033[m\]]> "
+# don't put duplicate lines in the history
+# don't save commands which start with a space
+HISTCONTROL=ignoredups:erasedups:ignorespace
 
-# Mr Benavent es un crack
-#xmodmap -e "remove lock = Caps_Lock"
-#setxkbmap -option ctrl:nocaps
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000
+HISTFILESIZE=100000
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+LESS="--RAW-CONTROL-CHARS"
+
+BOLD=$(tput bold)
+BLUECOLOR=$(tput setaf 4)
+REDCOLOR=$(tput setaf 1)
+GREENCOLOR=$(tput setaf 2)
+BLUECOLOR_BOLD=$BLUECOLOR$BOLD
+REDCOLOR_BOLD=$REDCOLOR$BOLD
+GREENCOLOR_BOLD=$GREENCOLOR$BOLD
+ENDCOLOR=$(tput sgr0)
+
+function __jobs() {
+	JOB_NUMBER=$(jobs | egrep -c "^\[[0-9]+\]")
+	if [ ${JOB_NUMBER} -gt 0 ] ; then
+		printf "!"
+	else
+		printf " "
+	fi
+}
+JOBS="\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]"
+HOSTNAME="[\[$REDCOLOR_BOLD\]\h\[$ENDCOLOR\]]"
+WHERE="\[$BLUECOLOR_BOLD\]\W\[$ENDCOLOR\]"
+
+PROMPT='$ '
+
+# For git prompt (download with: curl https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh)
+USE_GIT_PROMPT=1
+if [ $USE_GIT_PROMPT -eq 1 ] ; then
+	if [ ! -f ~/.git-prompt.sh ]; then
+    	curl http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash?id=HEAD > ~/.git-prompt.sh
+	fi
+	source  ~/.git-prompt.sh
+	export GIT_PS1_SHOWDIRTYSTATE=1
+
+	# \[ and \] are used to ensure that modifiers do not change Prompt length (that breaks reverse search history)
+	export PS1="$HOSTNAME$JOBS$WHERE\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]$PROMPT"
+else
+
+	# \[ and \] are used to ensure that modifiers do not change Prompt length (that breaks reverse search history)
+	export PS1="$HOSTNAME$JOBS$WHERE$PROMPT"
+	#export PS1="[\h]\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]\[$BLUECOLOR_BOLD\]\W\[$ENDCOLOR\]\[$GREENCOLOR_BOLD\]\[$ENDCOLOR\]$PROMPT"
+fi
+
+# I want cores
+ulimit -c unlimited
+
+# Careful with messages
+mesg n
+
+EDITOR=~/bin/vim
+export EDITOR
+export PSQL_EDITOR='~/bin/vim -c"set syntax=sql"'
 
 # User specific aliases and functions
-alias agg_db='psql --host=mccoy --user=juan --password --dbname=aggeliopolisdb'
-alias borracaca='find . | grep -e \.*~ -e *\.rej -e *\.orig | xargs rm 2>/dev/null'
-alias bomnegocio.tunnel='ssh juanito@devscm.schibsted.com.br -L:8888:localhost:8888'
-alias brasil.vpn_connect='ssh juanito@187.84.96.196 -L 8888:localhost:8888'
-alias dame_ip_puto_mac='sudo ipconfig set en1 BOOTP ; sudo ipconfig set en1 DHCP'
-alias db_pull='bzr pull bzr+ssh://code.schibstediberica.es/opt/bzr/deepblue/head'
-alias db_push='bzr push bzr+ssh://code.schibstediberica.es/opt/bzr/deepblue/head'
-alias demo.connect='ssh -A -X demo@scotty.schibstediberica.es'
-alias demo.subito_vpn='demo.connect -R 8989:172.16.22.41:80'
-alias dev.connect='ssh -A dev.schibstediberica.es -l juanito'
-alias dev.connect.demo='ssh -A dev.schibstediberica.es -l demo'
-alias kaneda='ssh -X kaneda.schibsted.cl'
-alias l='ls -alchG'
-alias ll='ls -lG'
-alias makeall='make rc clean cleandir build-only rall && echo Everything cleaned up and ready!!'
-alias pixeldump_all="kill -SIGALRM `ps wux | grep pixel | grep foreground | awk '{print \$2}' | sort -u | tail -1`"
-alias pixeldump_closed="kill -SIGUSR1 `ps wux | grep pixel | grep foreground | awk '{print \$2}' | sort -u | tail -1`"
-alias scotty.connect='ssh -A -X juanito@scotty.schibstediberica.es'
-alias scotty.mount='sshfs juanito@scotty: ~/remote/scotty/ -o sshfs_sync -o reconnect -o allow_other'
-alias scotty.subito_vpn='scotty.connect -R 8989:172.16.22.41:80'
-alias scotty.tunnel='ssh -L 22201:localhost:22201 -L 22202:localhost:22202 -L 22203:localhost:22203 -L 22204:localhost:22204 -L 22211:localhost:22211 -L 22208:localhost:22208 -L 22202:localhost:22202 -L 22210:localhost:22210 -L 22205:localhost:22205 -L 22231:localhost:22231 -L 22225:localhost:22225 -L 22203:localhost:22203 -L 22241:localhost:22241 -L 22243:localhost:22243 -L 22260:localhost:22260 juanito@dev.schibstediberica.es -A -q'
-alias spock.connect='ssh -X -A spock'
-alias ssh_berniaga='ssh javier@112.215.6.250 -p 27012'
-alias ssh_bruce='ssh juanito@91.183.60.190'
-alias ssh_subito='ssh juan.arias@172.16.22.36'
-alias ssh_tori='ssh 94.246.113.75'
+alias grep='grep --color'
+alias borracaca='rm `find . | grep -e \.*~ -e *\.rej -e *\.orig` 2>/dev/null'
 alias time='/usr/bin/time -v'
-alias transcommands="ls -la daemons/trans/ | grep trans_ | cut -d. -f1 |  sed -rne 's/.*trans_//p'"
-alias worf.connect='ssh -A -X juanito@worf.schibstediberica.net'
-alias worf.mount='sshfs juanito@worf: ~/remote/worf/ -o sshfs_sync -o reconnect -o allow_other'
-alias ayosdito.pixel='ssh root@192.168.1.36'
-alias ayosdito.trans='ssh padmin@192.168.1.19'
+alias xtidy='tidy -xml -i -c'
 
+# remove duplicates from input file into stdout
+duprm() {
+	if [ "$#" -ne 1 ] ; then
+		echo -e "Missing input file"
+		return 1
+	fi
+	awk '!x[$0]++' $1
+}
+
+function lsd() {
+	ls -l | awk '/^d/ {print $9}'
+}
+
+# git grep is faster than grep itself, it seems....
+gg() {
+	if [ "$#" -eq 1 ]; then
+		git grep -niI "$1" . | grep -iI "$1" --color
+	fi
+	if [ "$#" -eq 2 ]; then
+		git grep -niI "$1" "$2" | grep -iI "$1" --color
+	fi
+}
+
+# Bash Aliases
+if [ -f ~/.bash_local_aliases ]; then
+	. ~/.bash_local_aliases
+fi
