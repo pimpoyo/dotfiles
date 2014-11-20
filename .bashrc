@@ -56,7 +56,7 @@ PROMPT='$ '
 
 # For git prompt (download with: curl https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh)
 USE_GIT_PROMPT=1
-if [ $USE_GIT_PROMPT -eq 1 ] ; then
+if [ $USE_GIT_PROMPT -eq 0 ] ; then
 	if [ ! -f ~/.git-prompt.sh ]; then
     	curl http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash?id=HEAD > ~/.git-prompt.sh
 	fi
