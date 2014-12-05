@@ -1,0 +1,8 @@
+[user]
+	name = Juan Arias
+[push]
+	default = upstream
+[rerere]
+		enabled = true
+[color]
+		ui = true
