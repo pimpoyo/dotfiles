@@ -5,11 +5,6 @@ if [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
-# Bash completion
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
-
 # git completion
 if [ ! -f ~/.git-completion ]; then
     curl http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash?id=HEAD > ~/.git-completion
@@ -31,14 +26,16 @@ HISTFILESIZE=100000
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 LESS="--RAW-CONTROL-CHARS"
 
-BOLD=$(tput bold)
-BLUECOLOR=$(tput setaf 4)
-REDCOLOR=$(tput setaf 1)
-GREENCOLOR=$(tput setaf 2)
-BLUECOLOR_BOLD=$BLUECOLOR$BOLD
-REDCOLOR_BOLD=$REDCOLOR$BOLD
-GREENCOLOR_BOLD=$GREENCOLOR$BOLD
-ENDCOLOR=$(tput sgr0)
+REDCOLOR="\[\e[0;31m\]"
+BLUECOLOR="\[\e[0;34m\]"
+GREENCOLOR="\[\e[0;32m\]"
+YELLOWCOLOR="\[\e[0;33m\]"
+REDCOLOR_BOLD="\[\e[1;31m\]"
+BLUECOLOR_BOLD="\[\e[1;34m\]"
+GREENCOLOR_BOLD="\[\e[1;32m\]"
+ENDCOLOR="\[\e[m\]"
+SEPARATOR=" :: "
+PROMPT='> '
 
 function __jobs() {
 	JOB_NUMBER=$(jobs | egrep -c "^\[[0-9]+\]")
@@ -48,23 +45,22 @@ function __jobs() {
 		printf " "
 	fi
 }
-JOBS="\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]"
-HOSTNAME="[\[$REDCOLOR_BOLD\]\h\[$ENDCOLOR\]]"
-WHERE="\[$BLUECOLOR_BOLD\]\W\[$ENDCOLOR\]"
-
-PROMPT='$ '
+JOBS="$REDCOLOR_BOLD\$(__jobs)$ENDCOLOR"
+HOSTNAME="[$REDCOLOR_BOLD\h$ENDCOLOR]"
+WHERE="$BLUECOLOR_BOLD\w$ENDCOLOR"
+WHEN="$YELLOWCOLOR\t$ENDCOLOR"
 
 # For git prompt (download with: curl https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh)
 USE_GIT_PROMPT=1
-if [ $USE_GIT_PROMPT -eq 0 ] ; then
+if [ $USE_GIT_PROMPT -eq 1 ] ; then
 	if [ ! -f ~/.git-prompt.sh ]; then
-    	curl http://git.kernel.org/cgit/git/git.git/plain/contrib/completion/git-completion.bash?id=HEAD > ~/.git-prompt.sh
+		curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
 	fi
 	source  ~/.git-prompt.sh
 	export GIT_PS1_SHOWDIRTYSTATE=1
 
 	# \[ and \] are used to ensure that modifiers do not change Prompt length (that breaks reverse search history)
-	export PS1="$HOSTNAME$JOBS$WHERE\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]$PROMPT"
+	export PS1="$HOSTNAME$WHEN$SEPARATOR$WHERE$SEPARATOR$GREENCOLOR_BOLD\$(__git_ps1)$ENDCOLOR$JOBS\n$ "
 else
 
 	# \[ and \] are used to ensure that modifiers do not change Prompt length (that breaks reverse search history)
@@ -115,3 +111,5 @@ gg() {
 if [ -f ~/.bash_local_aliases ]; then
 	. ~/.bash_local_aliases
 fi
+
+#ft=sh; ts=2; sw=2
