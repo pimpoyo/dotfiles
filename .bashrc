@@ -26,46 +26,44 @@ HISTFILESIZE=100000
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 LESS="--RAW-CONTROL-CHARS"
 
-REDCOLOR="\[\e[0;31m\]"
-BLUECOLOR="\[\e[0;34m\]"
-GREENCOLOR="\[\e[0;32m\]"
-YELLOWCOLOR="\[\e[0;33m\]"
-REDCOLOR_BOLD="\[\e[1;31m\]"
-BLUECOLOR_BOLD="\[\e[1;34m\]"
-GREENCOLOR_BOLD="\[\e[1;32m\]"
-ENDCOLOR="\[\e[m\]"
-SEPARATOR=" :: "
-PROMPT='> '
+BOLD=$(tput bold)
+BLUECOLOR=$(tput setaf 4)
+REDCOLOR=$(tput setaf 1)
+GREENCOLOR=$(tput setaf 2)
+BLUECOLOR_BOLD=$BLUECOLOR$BOLD
+REDCOLOR_BOLD=$REDCOLOR$BOLD
+GREENCOLOR_BOLD=$GREENCOLOR$BOLD
+ENDCOLOR=$(tput sgr0)
+SEPARATOR="::"
+PROMPT=' $ '
 
 function __jobs() {
-	JOB_NUMBER=$(jobs | egrep -c "^\[[0-9]+\]")
-	if [ ${JOB_NUMBER} -gt 0 ] ; then
-		printf "!"
-	else
-		printf " "
-	fi
+    JOB_NUMBER=$(jobs | egrep -c "^\[[0-9]+\]")
+    if [ ${JOB_NUMBER} -gt 0 ] ; then
+        printf "($JOB_NUMBER)"
+    else
+        printf ""
+    fi
 }
-JOBS="$REDCOLOR_BOLD\$(__jobs)$ENDCOLOR"
-HOSTNAME="[$REDCOLOR_BOLD\h$ENDCOLOR]"
-WHERE="$BLUECOLOR_BOLD\w$ENDCOLOR"
-WHEN="$YELLOWCOLOR\t$ENDCOLOR"
 
-# For git prompt (download with: curl https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh)
+WHO="\[$REDCOLOR_BOLD\][\u@\h]\[$ENDCOLOR\]"
+WHEN="\[$GREENCOLOR\]\t\[$ENDCOLOR\]"
+WHERE="\[$BLUECOLOR_BOLD\]\w\[$ENDCOLOR\]"
+JOBS="\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]"
+
+# For git prompt (download with: curl https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.   git-prompt.sh)
 USE_GIT_PROMPT=1
 if [ $USE_GIT_PROMPT -eq 1 ] ; then
-	if [ ! -f ~/.git-prompt.sh ]; then
-		curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
-	fi
-	source  ~/.git-prompt.sh
-	export GIT_PS1_SHOWDIRTYSTATE=1
-
-	# \[ and \] are used to ensure that modifiers do not change Prompt length (that breaks reverse search history)
-	export PS1="$HOSTNAME$WHEN$SEPARATOR$WHERE$SEPARATOR$GREENCOLOR_BOLD\$(__git_ps1)$ENDCOLOR$JOBS\n$ "
+    if [ ! -f ~/.git-prompt.sh ]; then
+        curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
+    fi
+    source  ~/.git-prompt.sh
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1="\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]"
+    export SEPARATOR=" - "
+    export PS1=$WHO$WHEN$SEPARATOR$WHERE$SEPARATOR$GIT_PS1\\n$JOBS$PROMPT
 else
-
-	# \[ and \] are used to ensure that modifiers do not change Prompt length (that breaks reverse search history)
-	export PS1="$HOSTNAME$JOBS$WHERE$PROMPT"
-	#export PS1="[\h]\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]\[$BLUECOLOR_BOLD\]\W\[$ENDCOLOR\]\[$GREENCOLOR_BOLD\]\[$ENDCOLOR\]$PROMPT"
+    export PS1=$WHEN$SEPARATOR$WHERE$SEPARATOR$PROMPT$JOBS
 fi
 
 # I want cores
