@@ -71,7 +71,9 @@ if [ $USE_GIT_PROMPT -eq 1 ] ; then
         curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
     fi
     source  ~/.git-prompt.sh
-    export GIT_PS1_SHOWDIRTYSTATE=1
+# Enable for small repos or local (non NFS mounted) connections
+	export GIT_PS1_SHOWDIRTYSTATE=
+	export GIT_PS1_SHOWUNTRACKEDFILES=
     export GIT_PS1="\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]"
     export SEPARATOR=" - "
     export PS1=$WHO$WHEN$SEPARATOR$WHERE$SEPARATOR$GIT_PS1\\n$JOBS$PROMPT
