@@ -11,6 +11,19 @@ if [ ! -f ~/.git-completion ]; then
 fi
 . ~/.git-completion
 
+#sets up the color scheme for list export
+LSCOLORS=gxfxcxdxbxegedabagacad
+
+#enables color for iTerm
+export TERM=xterm-color
+
+export GREP_COLOR="01;34"
+
+export LANG=en_US.UTF8
+export LC_ALL=en_US.UTF8
+export LC_CTYPE=en_US.UTF8
+export LANGUAGE=en_US.UTF8
+
 # don't put duplicate lines in the history
 # don't save commands which start with a space
 HISTCONTROL=ignoredups:erasedups:ignorespace
@@ -72,38 +85,10 @@ ulimit -c unlimited
 # Careful with messages
 mesg n
 
-EDITOR=~/bin/vim
+# Useful fore everything: bash, git, postgres...
+EDITOR=vim
 export EDITOR
-export PSQL_EDITOR='~/bin/vim -c"set syntax=sql"'
-
-# User specific aliases and functions
-alias grep='grep --color'
-alias borracaca='rm `find . | grep -e \.*~ -e *\.rej -e *\.orig` 2>/dev/null'
-alias time='/usr/bin/time -v'
-alias xtidy='tidy -xml -i -c'
-
-# remove duplicates from input file into stdout
-duprm() {
-	if [ "$#" -ne 1 ] ; then
-		echo -e "Missing input file"
-		return 1
-	fi
-	awk '!x[$0]++' $1
-}
-
-function lsd() {
-	ls -l | awk '/^d/ {print $9}'
-}
-
-# git grep is faster than grep itself, it seems....
-gg() {
-	if [ "$#" -eq 1 ]; then
-		git grep -niI "$1" . | grep -iI "$1" --color
-	fi
-	if [ "$#" -eq 2 ]; then
-		git grep -niI "$1" "$2" | grep -iI "$1" --color
-	fi
-}
+export PSQL_EDITOR='vim -c"set syntax=sql"'
 
 # Bash Aliases
 if [ -f ~/.bash_local_aliases ]; then

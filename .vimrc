@@ -13,6 +13,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'elzr/vim-json.git'
 Plugin 'scrooloose/syntastic'
+" If using Vim 7.3+ with lua support, use this:
+"Plugin 'Shougo/neocomplete'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/bufkill.vim'
@@ -21,7 +23,11 @@ Plugin 'vim-scripts/bufkill.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+"Autoreload self
+autocmd! bufwritepost ~/.vimrc source %
+
 " Completion stuff
+let g:neocomplcache_enable_at_startup=1
 set omnifunc=syntaxcomplete#Complete
 set completeopt=longest,menuone
 
@@ -118,9 +124,6 @@ endif
 " So it doesn't ask to save evertytime you move out of buffers
 set hidden
 
-" I always end up doing this manually
-set paste
-
 if &diff
 	colorscheme blue
 else
@@ -136,9 +139,6 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.rb :call DeleteTrailingWS()
-" New formats, testing...
-autocmd BufWrite *bconf*.txt :call DeleteTrailingWS()
-autocmd BufWrite *.tmpl :call DeleteTrailingWS()
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm

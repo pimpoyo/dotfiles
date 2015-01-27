@@ -13,16 +13,5 @@ They will be available after your next session, or inmediatly by typing
 
 ## Usage
 
-There is a file that is not included in the bundle, but can be used to better manage local bash aliases.
-Just 
-	$ touch ~/.bash_local_aliases
-And copy all your aliases there
-
-You can specify that you want to use the git prompt by setting its flag to "1" in the .bashrc file, it's disabled by default.
-
-VIM is going to cry, you'll need to:
-* Create ~/.vim/tmp and ~/.vim/backup directories (or copy provided .vim directory)
-* Clone the 'https://github.com/gmarik/Vundle.vim' repo in your vim folder
-* Enter a vim shell to install selected plugins:
-	
-	$ vim +PluginInstall!
+Just exec start.sh and magic happens.
+If you want to change default prompt to be less verbose and not show git state, change appropriate flag in .bashrc
