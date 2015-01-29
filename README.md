@@ -13,5 +13,8 @@ They will be available after your next session, or inmediatly by typing
 
 ## Usage
 
-Just exec start.sh and magic happens.
+Just exec 
+	$ start.sh 
+and magic happens.
+
 If you want to change default prompt to be less verbose and not show git state, change appropriate flag in .bashrc

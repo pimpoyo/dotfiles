@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 REDCOLOR=$(tput setaf 1)
 GREENCOLOR=$(tput setaf 2)
