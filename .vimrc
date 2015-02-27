@@ -8,10 +8,10 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'tpope/vim-fugitive'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'elzr/vim-json.git'
+"Plugin 'altercation/vim-colors-solarized'
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'vim-ruby/vim-ruby'
+"Plugin 'elzr/vim-json.git'
 Plugin 'scrooloose/syntastic'
 " If using Vim 7.3+ with lua support, use this:
 "Plugin 'Shougo/neocomplete'
@@ -83,7 +83,6 @@ set directory=~/.vim/tmp
 set history=100		" keep 100 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
 
 " Switch syntax highlighting on, when the terminal has colors
 syntax on
@@ -103,9 +102,9 @@ set tabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=2 sts=2 sw=2
 
-" Linebreak on 500 characters
+" Linebreak on 160 characters
 set lbr
-set tw=500
+set tw=160
 
 set ai "Auto indent
 set si "Smart indent
@@ -114,12 +113,15 @@ set wrap "Wrap lines
 map <C-n> :bnext<CR>
 map <C-p> :bp<CR>
 
-set laststatus=2
+" Testing: change workspace to current file's location
+set autochdir
+"autocmd BufEnter * silent! lcd %:p:h
+
+" testing: never show status line on last window
+set laststatus=0
 set wildmenu
-if has("statusline")
-	"set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
-	set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-endif
+
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
 " So it doesn't ask to save evertytime you move out of buffers
 set hidden
@@ -156,10 +158,14 @@ autocmd BufReadPost *
 set splitbelow
 set splitright
 
-" Yuuhuuuu
-command W w
-command Q q
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-" Syntastic on save
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_aggregate_errors = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_auto_jump = 1
