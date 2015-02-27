@@ -16,21 +16,13 @@ if [ ! -f ~/.git-completion ]; then
 fi
 . ~/.git-completion
 
-#sets up the color scheme for list export
+#sets up some colors
 if [ $ARCH == "Darwin" ] ; then
 	export CLICOLOR=1
 fi
 LSCOLORS=gxfxcxdxbxegedabagacad
-
-#enables color for iTerm
 export TERM=xterm-color
-
 export GREP_COLOR="01;34"
-
-export LANG=en_US.UTF8
-export LC_ALL=en_US.UTF8
-export LC_CTYPE=en_US.UTF8
-export LANGUAGE=en_US.UTF8
 
 # don't put duplicate lines in the history
 # don't save commands which start with a space
