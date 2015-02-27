@@ -1,8 +1,13 @@
 # .bashrc
 
+# 'Darwin' for Mac, 'Linux' or similar elsewhere
+ARCH=$(uname -s)
+
 # Bash completion
-if [ -f /etc/bash_completion ]; then
+if [ -f /etc/bash_completion ] ; then
 	. /etc/bash_completion
+elif [ -f /usr/local/etc/bash_completion ] ; then
+	. /usr/local/etc/bash_completion
 fi
 
 # git completion
@@ -12,6 +17,9 @@ fi
 . ~/.git-completion
 
 #sets up the color scheme for list export
+if [ $ARCH == "Darwin" ] ; then
+	export CLICOLOR=1
+fi
 LSCOLORS=gxfxcxdxbxegedabagacad
 
 #enables color for iTerm
@@ -59,7 +67,7 @@ function __jobs() {
     fi
 }
 
-WHO="\[$REDCOLOR_BOLD\][\u@\h]\[$ENDCOLOR\]"
+WHO="\[$REDCOLOR_BOLD\][\h]\[$ENDCOLOR\]"
 WHEN="\[$GREENCOLOR\]\t\[$ENDCOLOR\]"
 WHERE="\[$BLUECOLOR_BOLD\]\w\[$ENDCOLOR\]"
 JOBS="\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]"
@@ -75,10 +83,11 @@ if [ $USE_GIT_PROMPT -eq 1 ] ; then
 	export GIT_PS1_SHOWDIRTYSTATE=
 	export GIT_PS1_SHOWUNTRACKEDFILES=
     export GIT_PS1="\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]"
-    export SEPARATOR=" - "
-    export PS1=$WHO$WHEN$SEPARATOR$WHERE$SEPARATOR$GIT_PS1\\n$JOBS$PROMPT
+    export SEPARATOR=" "
+    #export PS1=$WHO$WHEN$SEPARATOR$WHERE$SEPARATOR$GIT_PS1\\n$JOBS$PROMPT
+    export PS1=$WHO$SEPARATOR$WHERE$JOBS$GIT_PS1$PROMPT
 else
-    export PS1=$WHEN$SEPARATOR$WHERE$SEPARATOR$PROMPT$JOBS
+    export PS1=$WHO$WHEN$SEPARATOR$WHERE$JOBS$GIT_PS1$PROMPT
 fi
 
 # I want cores
