@@ -39,14 +39,6 @@ au BufNewFile,BufRead *.psql.tmpl set filetype=sql
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
-" Fast saving
-nmap <leader>w :w!<cr>
-
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
@@ -71,6 +63,7 @@ set magic
 
 " Show matching brackets when text indicator is over them
 set showmatch
+
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -97,8 +90,9 @@ endif
 set ffs=unix,dos,mac
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set ts=4
+set sts=4
+set sw=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=2 sts=2 sw=2
 
@@ -113,9 +107,8 @@ set wrap "Wrap lines
 map <C-n> :bnext<CR>
 map <C-p> :bp<CR>
 
-" Testing: change workspace to current file's location
 set autochdir
-"autocmd BufEnter * silent! lcd %:p:h
+autocmd BufEnter * silent! lcd %:p:h
 
 " testing: never show status line on last window
 set laststatus=0
@@ -141,6 +134,14 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.rb :call DeleteTrailingWS()
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
