@@ -107,8 +107,9 @@ set wrap "Wrap lines
 map <C-n> :bnext<CR>
 map <C-p> :bp<CR>
 
-set autochdir
-autocmd BufEnter * silent! lcd %:p:h
+" I DONT WANT DIR TO CHANGE!! XXX But I'd love to have the 'gf' shortcut
+"set autochdir
+"autocmd BufEnter * silent! lcd %:p:h
 
 " testing: never show status line on last window
 set laststatus=0
