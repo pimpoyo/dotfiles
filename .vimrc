@@ -7,17 +7,13 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'tpope/vim-fugitive'
-"Plugin 'vim-ruby/vim-ruby'
-"Plugin 'elzr/vim-json.git'
 Plugin 'scrooloose/syntastic'
 " If using Vim 7.3+ with lua support, use this:
 "Plugin 'Shougo/neocomplete'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/bufkill.vim'
+Plugin 'derekwyatt/vim-scala'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -26,11 +22,6 @@ filetype plugin indent on    " required
 "Autoreload self
 autocmd! bufwritepost ~/.vimrc source %
 
-" Completion stuff
-let g:neocomplcache_enable_at_startup=1
-set omnifunc=syntaxcomplete#Complete
-set completeopt=longest,menuone
-
 " Automagically indent templates
 au BufNewFile,BufRead *.less set filetype=css
 au BufNewFile,BufRead *.html.tmpl set filetype=html
@@ -38,6 +29,14 @@ au BufNewFile,BufRead *.psql.tmpl set filetype=sql
 
 " Set to auto read when a file is changed from the outside
 set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -63,7 +62,6 @@ set magic
 
 " Show matching brackets when text indicator is over them
 set showmatch
-
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -90,9 +88,8 @@ endif
 set ffs=unix,dos,mac
 
 " 1 tab == 4 spaces
-set ts=4
-set sts=4
-set sw=4
+set shiftwidth=4
+set tabstop=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=2 sts=2 sw=2
 
@@ -107,15 +104,20 @@ set wrap "Wrap lines
 map <C-n> :bnext<CR>
 map <C-p> :bp<CR>
 
-" I DONT WANT DIR TO CHANGE!! XXX But I'd love to have the 'gf' shortcut
+" Testing: change workspace to current file's location
 "set autochdir
 "autocmd BufEnter * silent! lcd %:p:h
 
-" testing: never show status line on last window
-set laststatus=0
+set laststatus=2
 set wildmenu
 
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+set statusline= "clear, for when vimrc is reloaded
+set statusline+=%.20F%m%r%h%w
+set statusline+=\ [ENC=%{&fenc}]
+set statusline+=\ [TYPE=%Y]
+set statusline+=%= " right align
+set statusline+=\ [POS=%.4l/%.4L\ (%p%%)]
+""set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
 " So it doesn't ask to save evertytime you move out of buffers
 set hidden
@@ -135,14 +137,6 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.rb :call DeleteTrailingWS()
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
-" Fast saving
-nmap <leader>w :w!<cr>
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -165,9 +159,14 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+" Completion stuff
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 1
+let g:neocomplcache_enable_at_startup=1
+set omnifunc=syntaxcomplete#Complete
+set completeopt=longest,menuone
+
