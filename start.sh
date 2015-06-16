@@ -5,10 +5,12 @@ GREENCOLOR=$(tput setaf 2)
 ENDCOLOR=$(tput sgr0)
 
 # First of all, setup VIM
-echo -e "${GREENCOLOR}Setting up VIM.....${ENDCOLOR}"
-mkdir -p ~/.vim/tmp ~/.vim/backup > /dev/null 2>&1 
-rm -rf ~/.vim/bundle
-git clone https://github.com/gmarik/Vundle.vim ~/.vim/bundle/Vundle.vim
+VIMDIR=~/.vim
+echo -e "${GREENCOLOR}Setting up VIM in ${VIMDIR} ...${ENDCOLOR}"
+rm -rf ${VIMDIR}/bundle
+mkdir -p ${VIMDIR}/tmp ${VIMDIR}/backup ${VIMDIR}/colors > /dev/null 2>&1 
+cp .vim/colors/monokai.vim ${VIMDIR}/colors/
+git clone https://github.com/gmarik/Vundle.vim ${VIMDIR}/bundle/Vundle.vim
 cp .vimrc ~/.vimrc
 vim +PluginInstall +qall
 

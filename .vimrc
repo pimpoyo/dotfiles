@@ -88,9 +88,11 @@ endif
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
+set sts=2
+set expandtab
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=2 sts=2 sw=2
 
@@ -113,7 +115,7 @@ set laststatus=2
 set wildmenu
 
 set statusline= "clear, for when vimrc is reloaded
-set statusline+=%.20F%m%r%h%w
+set statusline+=%.40F%m%r%h%w
 set statusline+=\ [ENC=%{&fenc}]
 set statusline+=\ [TYPE=%Y]
 set statusline+=%= " right align
