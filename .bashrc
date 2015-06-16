@@ -21,8 +21,16 @@ if [ $ARCH == "Darwin" ] ; then
 	export CLICOLOR=1
 fi
 LSCOLORS=gxfxcxdxbxegedabagacad
+
+#enables color for iTerm
 export TERM=xterm-color
+
 export GREP_COLOR="01;34"
+
+export LANG=en_US.UTF8
+export LC_ALL=en_US.UTF8
+export LC_CTYPE=en_US.UTF8
+export LANGUAGE=en_US.UTF8
 
 # don't put duplicate lines in the history
 # don't save commands which start with a space
@@ -67,19 +75,19 @@ JOBS="\[$REDCOLOR_BOLD\]\$(__jobs)\[$ENDCOLOR\]"
 # For git prompt (download with: curl https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.   git-prompt.sh)
 USE_GIT_PROMPT=1
 if [ $USE_GIT_PROMPT -eq 1 ] ; then
-    if [ ! -f ~/.git-prompt.sh ]; then
-        curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
-    fi
-    source  ~/.git-prompt.sh
-# Enable for small repos or local (non NFS mounted) connections
-	export GIT_PS1_SHOWDIRTYSTATE=
-	export GIT_PS1_SHOWUNTRACKEDFILES=
-    export GIT_PS1="\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]"
-    export SEPARATOR=" "
-    #export PS1=$WHO$WHEN$SEPARATOR$WHERE$SEPARATOR$GIT_PS1\\n$JOBS$PROMPT
-    export PS1=$WHO$SEPARATOR$WHERE$JOBS$GIT_PS1$PROMPT
+  if [ ! -f ~/.git-prompt.sh ]; then
+    curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
+  fi
+  source  ~/.git-prompt.sh
+  # Enable for small repos or local (non NFS mounted) connections
+  export GIT_PS1_SHOWDIRTYSTATE=1
+  export GIT_PS1_SHOWUNTRACKEDFILES=1
+  export GIT_PS1="\[$GREENCOLOR_BOLD\]\$(__git_ps1)\[$ENDCOLOR\]"
+  export SEPARATOR=" "
+  #export PS1=$WHO$WHEN$SEPARATOR$WHERE$SEPARATOR$GIT_PS1\\n$JOBS$PROMPT
+  export PS1=$WHO$SEPARATOR$WHERE$JOBS$GIT_PS1$PROMPT
 else
-    export PS1=$WHO$WHEN$SEPARATOR$WHERE$JOBS$GIT_PS1$PROMPT
+  export PS1=$WHO$WHEN$SEPARATOR$WHERE$JOBS$GIT_PS1$PROMPT
 fi
 
 # I want cores

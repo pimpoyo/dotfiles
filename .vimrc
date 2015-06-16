@@ -7,13 +7,13 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
 Plugin 'scrooloose/syntastic'
-" If using Vim 7.3+ with lua support, use this:
-"Plugin 'Shougo/neocomplete'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/bufkill.vim'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
 Plugin 'othree/html5.vim'
 
 " All of your Plugins must be added before the following line
@@ -66,15 +66,25 @@ set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
+" My editor my rules
+set textwidth=120
+set wrapmargin=2
+set linebreak
+
 " Keep all backups in one place, needs to be aligned with the system (VIM does
 " not create directories)
 set backup
 set backupdir=~/.vim/backup
 set directory=~/.vim/tmp
 
-set history=100		" keep 100 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
+" keep 100 lines of command line history
+set history=100
+
+" show the cursor position all the time
+set ruler		
+
+" display incomplete commands
+set showcmd
 
 " Switch syntax highlighting on, when the terminal has colors
 syntax on
@@ -88,15 +98,13 @@ endif
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
+set sts=2
+set expandtab
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=2 sts=2 sw=2
-
-" Linebreak on 160 characters
-set lbr
-set tw=160
 
 set ai "Auto indent
 set si "Smart indent
@@ -109,16 +117,18 @@ map <C-p> :bp<CR>
 "set autochdir
 "autocmd BufEnter * silent! lcd %:p:h
 
+" Super needed in order for multiple buffers to work properly
 set laststatus=2
-set wildmenu
+
+" use menu for command line completion
+"set wildmenu
 
 set statusline= "clear, for when vimrc is reloaded
-set statusline+=%.20F%m%r%h%w
+set statusline+=%.45F%m%r%h%w
 set statusline+=\ [ENC=%{&fenc}]
 set statusline+=\ [TYPE=%Y]
 set statusline+=%= " right align
 set statusline+=\ [POS=%.4l/%.4L\ (%p%%)]
-""set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
 " So it doesn't ask to save evertytime you move out of buffers
 set hidden
@@ -160,14 +170,15 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-" Completion stuff
+let g:syntastic_yaml_checkers = ['yaml-lint']
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 1
+
+" Completion stuff
 let g:neocomplcache_enable_at_startup=1
 set omnifunc=syntaxcomplete#Complete
 set completeopt=longest,menuone
-
