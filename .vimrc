@@ -14,6 +14,7 @@ Plugin 'Shougo/neocomplcache.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/bufkill.vim'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'othree/html5.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -125,7 +126,7 @@ set hidden
 if &diff
 	colorscheme blue
 else
-	colorscheme delek
+	colorscheme monokai
 endif
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
